@@ -17,6 +17,7 @@ class AppWrite {
 
   static init() {
     client.setProject(projectId);
+    account = Account(client);
     databases = Databases(client);
   }
 

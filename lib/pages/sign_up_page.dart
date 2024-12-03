@@ -44,9 +44,9 @@ class _SignUpPageState extends State<SignUpPage> {
                     width: 100,
                   ),
                 ),
-                Positioned (
+                Positioned(
                   bottom: 0,
-                  left: 20  ,
+                  left: 20,
                   child: Transform.translate(
                     offset: Offset(0, 10),
                     child: Column(
@@ -56,15 +56,12 @@ class _SignUpPageState extends State<SignUpPage> {
                         const Text(
                           'New Account',
                           style: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 24,
-                            color: Colors.black
-                          ),
+                              fontWeight: FontWeight.w700,
+                              fontSize: 24,
+                              color: Colors.black),
                         ),
                         DView.height(8),
-                        const Text(
-                          "Let's grow your business today"
-                        )
+                        const Text("Let's grow your business today")
                       ],
                     ),
                   ),
@@ -101,7 +98,8 @@ class _SignUpPageState extends State<SignUpPage> {
                       height: 20,
                       width: 20,
                       decoration: BoxDecoration(
-                        border: Border.all(color: Theme.of(context).primaryColor),
+                        border:
+                            Border.all(color: Theme.of(context).primaryColor),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       padding: const EdgeInsets.all(2),
@@ -118,16 +116,20 @@ class _SignUpPageState extends State<SignUpPage> {
                   ],
                 ),
                 DView.height(30),
-                FilledButton(
-                  onPressed: () {
-                    signUpController.execute(context);
-                  }, 
-                  child: const Text('Sign Up')
-                ),
+                Obx(() {
+                  bool loading = signUpController.loading;
+                  if (loading) return DView.loadingCircle();
+                  return FilledButton(
+                      onPressed: () {
+                        signUpController.execute(context);
+                      },
+                      child: const Text('Sign Up'));
+                }),
                 DView.height(),
                 SecondaryButton(
                   onPressed: () {},
-                  child: const Text('Sign In to My Account'),)
+                  child: const Text('Sign In to My Account'),
+                )
               ],
             ),
           ),

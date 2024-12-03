@@ -1,4 +1,5 @@
 import 'package:coworkers/config/app_info.dart';
+import 'package:coworkers/datasources%5B/user_datasource.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
@@ -40,5 +41,21 @@ class SignUpController extends GetxController {
       AppInfo.failed(context, 'Password minimal 8 karakter');
       return;
     }
+
+    loading = true;
+    UserDatasource.signUp(
+      edtName.text, 
+      edtEmail.text, 
+      edtPassword.text
+    ).then((value) {
+      loading = false;
+      value.fold(
+        (message) {
+          AppInfo.failed(context, message);
+        }, 
+        (data) {
+          AppInfo.toastSuccess('SignUp berhasil');
+        });
+    });
   }
 }
