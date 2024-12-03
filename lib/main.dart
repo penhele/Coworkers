@@ -2,6 +2,7 @@ import 'package:coworkers/config/app_color.dart';
 import 'package:coworkers/config/appwrite.dart';
 import 'package:coworkers/config/enums.dart';
 import 'package:coworkers/pages/get_started.dart';
+import 'package:coworkers/pages/sign_in_page.dart';
 import 'package:coworkers/pages/sign_up_page.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -44,6 +45,7 @@ class MyApp extends StatelessWidget {
       routes: {
         AppRoute.getStarted.name: (context) => const GetStartedPage(),
         AppRoute.signUp.name: (context) => const SignUpPage(),
+        AppRoute.signIn.name: (context) => const SignInPage(),
       }
     );
   }
