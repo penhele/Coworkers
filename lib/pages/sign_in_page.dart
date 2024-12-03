@@ -1,4 +1,5 @@
-import 'package:coworkers/controllers/sign_up_controller.dart';
+import 'package:coworkers/config/enums.dart';
+import 'package:coworkers/controllers/sign_in_controller.dart';
 import 'package:coworkers/widgets/input_auth.dart';
 import 'package:coworkers/widgets/input_auth_password.dart';
 import 'package:coworkers/widgets/secondary_button.dart';
@@ -6,19 +7,19 @@ import 'package:d_view/d_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class SignUpPage extends StatefulWidget {
-  const SignUpPage({super.key});
+class SignInPage extends StatefulWidget {
+  const SignInPage({super.key});
 
   @override
-  State<SignUpPage> createState() => _SignUpPageState();
+  State<SignInPage> createState() => _SignInPageState();
 }
 
-class _SignUpPageState extends State<SignUpPage> {
-  final signUpController = Get.put(SignUpController());
+class _SignInPageState extends State<SignInPage> {
+  final signInController = Get.put(SignInController());
 
   @override
   void dispose() {
-    signUpController.clear();
+    signInController.clear();
     super.dispose();
   }
 
@@ -54,14 +55,14 @@ class _SignUpPageState extends State<SignUpPage> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         const Text(
-                          'New Account',
+                          'Sign In',
                           style: TextStyle(
                               fontWeight: FontWeight.w700,
                               fontSize: 24,
                               color: Colors.black),
                         ),
                         DView.height(8),
-                        const Text("Let's grow your business today")
+                        const Text("Manage your worker")
                       ],
                     ),
                   ),
@@ -75,60 +76,32 @@ class _SignUpPageState extends State<SignUpPage> {
             child: Column(
               children: [
                 InputAuth(
-                  editingController: signUpController.edtName,
-                  title: 'Complete Name',
-                  hint: 'Write your name',
-                ),
-                DView.height(),
-                InputAuth(
-                  editingController: signUpController.edtEmail,
+                  editingController: signInController.edtEmail,
                   title: 'Email Address',
                   hint: 'Write your email',
                 ),
                 DView.height(),
                 InputAuthPassword(
-                  editingController: signUpController.edtPassword,
+                  editingController: signInController.edtPassword,
                   title: 'Password',
                   hint: 'Write your password',
                 ),
                 DView.height(30),
-                Row(
-                  children: [
-                    Container(
-                      height: 20,
-                      width: 20,
-                      decoration: BoxDecoration(
-                        border:
-                            Border.all(color: Theme.of(context).primaryColor),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      padding: const EdgeInsets.all(2),
-                      child: Material(
-                        borderRadius: BorderRadius.circular(6),
-                        color: Theme.of(context).primaryColor,
-                      ),
-                    ),
-                    DView.width(8),
-                    const Text(
-                      'I agree with terms and conditions',
-                      style: TextStyle(color: Colors.black),
-                    )
-                  ],
-                ),
-                DView.height(30),
                 Obx(() {
-                  bool loading = signUpController.loading;
+                  bool loading = signInController.loading;
                   if (loading) return DView.loadingCircle();
                   return FilledButton(
                       onPressed: () {
-                        signUpController.execute(context);
+                        signInController.execute(context);
                       },
-                      child: const Text('Sign Up'));
+                      child: const Text('Sign In & Explore'));
                 }),
                 DView.height(),
                 SecondaryButton(
-                  onPressed: () {},
-                  child: const Text('Sign In to My Account'),
+                  onPressed: () {
+                    Navigator.pushNamed(context, AppRoute.signUp.name);
+                  },
+                  child: const Text('Create New Account'),
                 )
               ],
             ),

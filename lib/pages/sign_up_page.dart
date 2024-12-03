@@ -127,7 +127,9 @@ class _SignUpPageState extends State<SignUpPage> {
                 }),
                 DView.height(),
                 SecondaryButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
                   child: const Text('Sign In to My Account'),
                 )
               ],
