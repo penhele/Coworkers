@@ -56,31 +56,37 @@ class UserDatasource {
   ) async {
     try {
       final resultAuth = await AppWrite.account.createEmailPasswordSession(
-        email: email, 
-        password: password
+        email: email,
+        password: password,
       );
 
       final response = await AppWrite.databases.getDocument(
         databaseId: AppWrite.databaseId, 
         collectionId: AppWrite.collectionUsers, 
-        documentId: resultAuth.$id,
+        documentId: resultAuth.userId, 
       );
 
       Map data = response.data;
 
-      AppLog.success(body: data.toString(), title: 'User - SignIn');
+      AppLog.success(
+        body: data.toString(), 
+        title: 'User - SignIn'
+      );
 
       return Right(data);
 
     } catch (e) {
-      AppLog.error(body: e.toString(), title: 'User - SignIn');
+      AppLog.error(
+        body: e.toString(), 
+        title: 'User - SignIn'
+      );
 
       String defaultMessage = 'Terjadi suatu masalah';
       String message = defaultMessage;
 
       if (e is AppwriteException) {
         if (e.code == 401) {
-          message = 'akun tidak dikenali';
+          message = 'Akun tidak dikenali';
         } else {
           message = e.message ?? defaultMessage;
         }

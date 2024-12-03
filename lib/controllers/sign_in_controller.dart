@@ -1,4 +1,6 @@
 import 'package:coworkers/config/app_info.dart';
+import 'package:coworkers/config/enums.dart';
+import 'package:coworkers/config/session.dart';
 import 'package:coworkers/datasources/user_datasource.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
@@ -47,8 +49,10 @@ class SignInController extends GetxController {
           AppInfo.failed(context, message);
         }, 
         (data) {
-          AppInfo.toastSuccess('SignIn berhasil');
-          // save to session
+          AppSession.setUser(Map<String, dynamic>.from(data));
+          AppInfo.toastSuccess('Berhasil');
+
+          Navigator.pushReplacementNamed(context, AppRoute.dashboard.name);
         });
     });
   }

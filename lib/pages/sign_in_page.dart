@@ -49,7 +49,7 @@ class _SignInPageState extends State<SignInPage> {
                   bottom: 0,
                   left: 20,
                   child: Transform.translate(
-                    offset: Offset(0, 10),
+                    offset: const Offset(0, 10),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisSize: MainAxisSize.min,
