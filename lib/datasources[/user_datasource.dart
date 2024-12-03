@@ -39,8 +39,48 @@ class UserDatasource {
       String message = defaultMessage;
 
       if (e is AppwriteException) {
-        if (e.code == 400) {
+        if (e.code == 409) {
           message = 'Email sudah terdaftar';
+        } else {
+          message = e.message??defaultMessage;
+        }
+      }
+
+      return left(message);
+    }
+  }
+
+  static Future<Either<String, Map>> signIn (
+    String email,
+    String password,
+  ) async {
+    try {
+      final resultAuth = await AppWrite.account.createEmailPasswordSession(
+        email: email, 
+        password: password
+      );
+
+      final response = await AppWrite.databases.getDocument(
+        databaseId: AppWrite.databaseId, 
+        collectionId: AppWrite.collectionUsers, 
+        documentId: resultAuth.userId,
+      );
+
+      Map data = response.data;
+
+      AppLog.success(body: data.toString(), title: 'User - SignIn');
+
+      return Right(data);
+
+    } catch (e) {
+      AppLog.error(body: e.toString(), title: 'User - SignIn');
+
+      String defaultMessage = 'Terjadi suatu masalah';
+      String message = defaultMessage;
+
+      if (e is AppwriteException) {
+        if (e.code == 401) {
+          message = 'akun tidak dikenali';
         } else {
           message = e.message??defaultMessage;
         }
