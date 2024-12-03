@@ -42,7 +42,7 @@ class UserDatasource {
         if (e.code == 409) {
           message = 'Email sudah terdaftar';
         } else {
-          message = e.message??defaultMessage;
+          message = e.message ?? defaultMessage;
         }
       }
 
@@ -63,7 +63,7 @@ class UserDatasource {
       final response = await AppWrite.databases.getDocument(
         databaseId: AppWrite.databaseId, 
         collectionId: AppWrite.collectionUsers, 
-        documentId: resultAuth.userId,
+        documentId: resultAuth.$id,
       );
 
       Map data = response.data;
@@ -82,7 +82,7 @@ class UserDatasource {
         if (e.code == 401) {
           message = 'akun tidak dikenali';
         } else {
-          message = e.message??defaultMessage;
+          message = e.message ?? defaultMessage;
         }
       }
 
