@@ -37,32 +37,37 @@ class _BrowseFragmentState extends State<BrowseFragment> {
                 width: MediaQuery.of(context).size.width,
                 height: 414, 
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  header(),
-
-                  DView.height(30),
-
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: Text(
-                      'Anda butuh pekerja\napa untuk hari ini?',
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.black
+              Transform.translate(
+                offset: const Offset(0, 25),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    header(),
+                
+                    DView.height(30),
+                
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      child: Text(
+                        'Anda butuh pekerja\napa untuk hari ini?',
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.black
+                        ),
                       ),
                     ),
-                  ),
-
-                  DView.height(20),
-
-                  categories(),
-
-                  DView.height(40),
-                ],
+                
+                    DView.height(20),
+                
+                    categories(),
+                
+                    DView.height(40),
+                
+                    searchBox(),
+                  ],
+                ),
               )
             ],
           ),
@@ -187,6 +192,56 @@ class _BrowseFragmentState extends State<BrowseFragment> {
             ),
           );
         },
+      ),
+    );
+  }
+
+  Widget searchBox() {
+    return Container(
+      height: 50,
+      margin: const EdgeInsets.symmetric(horizontal: 20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(30),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xffE5E7EC).withOpacity(0.5),
+            blurRadius: 30,
+            offset: const Offset(0, 6)
+          )
+        ]
+      ),
+
+      alignment: Alignment.bottomLeft,
+      padding: const EdgeInsets.only(left: 20, right: 8),
+
+      child: Row(
+        children: [
+          const Expanded(
+            child: TextField(
+              decoration: InputDecoration(
+                hintText: 'Search your dream worker',
+                hintStyle: TextStyle(
+                  color: Color(0xffA7A8B3),
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400,
+                ),
+                border: InputBorder.none,
+                contentPadding: EdgeInsets.all(0),
+                isDense: true
+              ),
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+          IconButton(
+            onPressed: () {},
+            icon: ImageIcon(AssetImage('assets/ic_search.png')),
+          )
+        ],
       ),
     );
   }
