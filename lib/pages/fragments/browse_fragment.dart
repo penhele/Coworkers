@@ -38,9 +38,30 @@ class _BrowseFragmentState extends State<BrowseFragment> {
                 height: 414, 
               ),
               Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  header()
+                  header(),
+
+                  DView.height(30),
+
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    child: Text(
+                      'Anda butuh pekerja\napa untuk hari ini?',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.black
+                      ),
+                    ),
+                  ),
+
+                  DView.height(20),
+
+                  categories(),
+
+                  DView.height(40),
                 ],
               )
             ],
@@ -119,6 +140,53 @@ class _BrowseFragmentState extends State<BrowseFragment> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget categories() {
+    return SizedBox(
+      height: 120,
+      child: ListView.builder(
+        physics: const BouncingScrollPhysics(),
+        scrollDirection: Axis.horizontal,
+        itemCount: browseController.categories.length,
+        itemBuilder: (context, index) {
+          Map category = browseController.categories[index];
+          return GestureDetector(
+            onTap: () {},
+            child: Container(
+              margin: EdgeInsets.only(
+                left: index == 0 ? 20 : 8,
+                right: index == browseController.categories.length - 1 ? 20 : 8,
+              ),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
+              ),
+              width: 100,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    category['icon'],
+                    width: 46,
+                    height: 46,
+                  ),
+                  DView.height(8),
+                  Text(
+                    category['label'],
+                    style: const TextStyle(
+                      fontSize: 16,
+                      color: Colors.black,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  )
+                ],
+              ),
+            ),
+          );
+        },
       ),
     );
   }
