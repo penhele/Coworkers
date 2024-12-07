@@ -45,9 +45,7 @@ class _BrowseFragmentState extends State<BrowseFragment> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     header(),
-
                     DView.height(30),
-
                     const Padding(
                       padding: EdgeInsets.symmetric(horizontal: 20),
                       child: Text(
@@ -72,6 +70,79 @@ class _BrowseFragmentState extends State<BrowseFragment> {
         DView.height(50),
         latestStats(),
         DView.height(30),
+        highRatedWorkers(),
+        DView.height(30),
+      ],
+    );
+  }
+
+  Widget highRatedWorkers() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SectionTitle(
+          text: 'High Rated Workers', autoPadding: true,
+        ),
+        DView.height(),
+        SizedBox(
+          height: 120,
+          child: ListView.builder(
+            physics: const BouncingScrollPhysics(),
+            scrollDirection: Axis.horizontal,
+            itemCount: browseController.highRatedWorkers.length,
+            itemBuilder: (context, index) {
+              Map worker = browseController.highRatedWorkers[index];
+              return Container(
+                width: 100,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: const Color(0xffEAEAEA)),
+                ),
+                margin: EdgeInsets.only(
+                  left: index == 0 ? 20 : 8,
+                  right: index == browseController.highRatedWorkers.length - 1 ? 20 : 8,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      worker['image'],
+                      width: 46,
+                      height: 46,
+                    ),
+                    DView.height(6),
+                    Text(
+                      worker['name'],
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black
+                      ),
+                    ),
+                    DView.height(4),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          'assets/ic_star_small.png',
+                          height: 16,
+                          width: 16,
+                        ),
+                        DView.width(2),
+                        Text(
+                          '${worker['rate']}',
+                          style: const TextStyle(
+                            color: Colors.black
+                          ),
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              );
+            },
+          ),
+        )
       ],
     );
   }

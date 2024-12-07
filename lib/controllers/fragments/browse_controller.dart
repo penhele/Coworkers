@@ -35,7 +35,7 @@ class BrowseController extends GetxController {
       'rate': 4.8,
     },
     {
-      'image': 'assets/cindian.png',
+      'image': 'assets/cindinan.png',
       'name': 'Cindian',
       'rate': 4.9,
     },
