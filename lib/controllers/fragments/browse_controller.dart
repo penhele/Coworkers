@@ -63,7 +63,7 @@ class BrowseController extends GetxController {
       'job': 'Chef',
     },
     {
-      'image': 'assets/Sushi.png',
+      'image': 'assets/sushi.png',
       'name': 'Sushi',
       'job': 'Tutor',
     },

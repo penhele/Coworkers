@@ -72,6 +72,75 @@ class _BrowseFragmentState extends State<BrowseFragment> {
         DView.height(30),
         highRatedWorkers(),
         DView.height(30),
+        newcomers(),
+        DView.height(30),
+      ],
+    );
+  }
+
+  Widget newcomers() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SectionTitle(
+          text: 'Newcomers', autoPadding: true,
+        ),
+        DView.height(),
+        GridView.builder(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            mainAxisExtent: 74,
+            crossAxisSpacing: 16,
+            mainAxisSpacing: 16
+          ),
+          physics: const NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          itemCount: browseController.newcomers.length,
+          itemBuilder: (context, index) {
+            Map item = browseController.newcomers[index];
+            return Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: const Color(0xffEAEAEA)),
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    item['image'],
+                    width: 46,
+                    height: 46,
+                  ),
+                  DView.width(12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          item['name'],
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black
+                          ),
+                        ),
+                        Text(
+                          item['job'],
+                          style: const TextStyle(
+                            color: Colors.grey
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            );
+          },
+        )
       ],
     );
   }
