@@ -4,6 +4,7 @@ import 'package:coworkers/config/enums.dart';
 import 'package:coworkers/config/session.dart';
 import 'package:coworkers/pages/dashboard.dart';
 import 'package:coworkers/pages/get_started.dart';
+import 'package:coworkers/pages/list_worker_page.dart';
 import 'package:coworkers/pages/sign_in_page.dart';
 import 'package:coworkers/pages/sign_up_page.dart';
 import 'package:d_view/d_view.dart';
@@ -63,6 +64,10 @@ class MyApp extends StatelessWidget {
               return const Dashboard();
             }
           );
+        },
+        AppRoute.listWorker.name: (context) {
+          String category =  ModalRoute.of(context)!.settings.arguments as String;
+          return ListWorkerPage(category: category);
         },
       }
     );
