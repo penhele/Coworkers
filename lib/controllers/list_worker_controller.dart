@@ -1,3 +1,4 @@
+import 'package:coworkers/datasources/worker_datasource.dart';
 import 'package:coworkers/models/worker_model.dart';
 import 'package:get/get.dart';
 
@@ -38,6 +39,14 @@ class ListWorkerController extends GetxController {
   set statusFetch(String n) => _statusFetch.value = n;
 
   fetchAvailable(String category) {
-    
+    statusFetch = "Loading";
+    WorkerDatasource.fetchAvailable(category).then((value) {
+      value.fold((message) {
+        statusFetch = message;
+      }, (workers) {
+        statusFetch = 'Success';
+        availableWorkers = workers;
+      });
+    });
   }
 }

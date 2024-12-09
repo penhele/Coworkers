@@ -1,8 +1,6 @@
 import 'package:coworkers/controllers/list_worker_controller.dart';
 import 'package:d_view/d_view.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 class ListWorkerPage extends StatefulWidget {
@@ -15,6 +13,12 @@ class ListWorkerPage extends StatefulWidget {
 
 class _ListWorkerPageState extends State<ListWorkerPage> {
   final listWorkerController = Get.put(ListWorkerController());
+
+  @override
+  void initState() {
+    listWorkerController.fetchAvailable(widget.category);
+    super.initState();
+  }
 
   @override
   void dispose() {
