@@ -1,6 +1,8 @@
 import 'package:coworkers/config/app_color.dart';
 import 'package:coworkers/controllers/list_worker_controller.dart';
 import 'package:coworkers/widgets/header_worker.dart';
+import 'package:coworkers/widgets/section_title.dart';
+import 'package:d_view/d_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -66,7 +68,9 @@ class _ListWorkerPageState extends State<ListWorkerPage> {
                 )
               ],
             ),
-          )
+          ),
+          DView.height(50),
+          topRatedCategory(),
         ],
       ),
     );
@@ -119,6 +123,77 @@ class _ListWorkerPageState extends State<ListWorkerPage> {
           )
         ],
       ),
+    );
+  }
+
+    Widget topRatedCategory() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SectionTitle(
+          text: 'Top Rated ${widget.category}', autoPadding: true,
+        ),
+        DView.height(),
+        SizedBox(
+          height: 120,
+          child: ListView.builder(
+            physics: const BouncingScrollPhysics(),
+            scrollDirection: Axis.horizontal,
+            itemCount: listWorkerController.topRated.length,
+            itemBuilder: (context, index) {
+              Map worker = listWorkerController.topRated[index];
+              return Container(
+                width: 100,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: const Color(0xffEAEAEA)),
+                ),
+                margin: EdgeInsets.only(
+                  left: index == 0 ? 20 : 8,
+                  right: index == listWorkerController.topRated.length - 1 ? 20 : 8,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      worker['image'],
+                      width: 46,
+                      height: 46,
+                    ),
+                    DView.height(6),
+                    Text(
+                      worker['name'],
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black
+                      ),
+                    ),
+                    DView.height(4),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          'assets/ic_star_small.png',
+                          height: 16,
+                          width: 16,
+                        ),
+                        DView.width(2),
+                        Text(
+                          '${worker['rate']}',
+                          style: const TextStyle(
+                            color: Colors.black
+                          ),
+                        )
+                      ],
+                    )
+                  ],
+                ),
+              );
+            },
+          ),
+        )
+      ],
     );
   }
 }
