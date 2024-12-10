@@ -1,4 +1,6 @@
+import 'package:coworkers/config/app_color.dart';
 import 'package:coworkers/controllers/list_worker_controller.dart';
+import 'package:coworkers/widgets/header_worker.dart';
 import 'package:d_view/d_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -29,7 +31,42 @@ class _ListWorkerPageState extends State<ListWorkerPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: DView.appBarCenter(widget.category),
+      body: ListView(
+        padding: const EdgeInsets.all(0),
+        children: [
+          SizedBox(
+            height: 172,
+            child: Stack(
+              children: [
+                Container(
+                  decoration: const BoxDecoration(
+                      color: AppColor.bgHeader,
+                      borderRadius: BorderRadius.only(
+                        bottomRight: Radius.circular(80),
+                      )),
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 40),
+                      child: HeaderWorker(
+                        title: widget.category,
+                        subtitle: '13,492 workers',
+                        iconLeft: 'assets/ic_back.png',
+                        functionLeft: () => Navigator.pop(context),
+                        iconRight: 'assets/ic_filter.png',
+                        functionRight: () => {}
+                      ),
+                    ),
+                    DView.nothing(),
+                  ],
+                )
+              ],
+            ),
+          )
+        ],
+      ),
     );
   }
 }
