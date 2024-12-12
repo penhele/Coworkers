@@ -9,6 +9,7 @@ import 'package:coworkers/widgets/section_title.dart';
 import 'package:d_view/d_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class BookingPage extends StatefulWidget {
   const BookingPage({super.key, required this.worker});
@@ -74,12 +75,81 @@ class _BookingPageState extends State<BookingPage> {
           ),
           DView.height(90),
           selectDuration(),
+          DView.height(30),
+          whenYouNeed(),
         ],
       ),
     );
   }
 
-  selectDuration() {
+  Widget whenYouNeed() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SectionTitle(text: 'When you need?', autoPadding: true,),
+        DView.height(),
+        Container(
+          decoration: 
+          BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: Theme.of(context).primaryColor,
+              width: 2
+            ),
+          ),
+          padding: const EdgeInsets.fromLTRB(12, 12, 8, 12),
+          margin: const EdgeInsets.symmetric(horizontal: 20),
+          child: Row(
+            children: [
+              Container(
+                height: 46,
+                width: 46,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColor,
+                  shape: BoxShape.circle,
+                ),
+                alignment: Alignment.center,
+                child: Image.asset(
+                  'assets/ic_clock.png',
+                  width: 24,
+                  height: 24,
+                ),
+              ),
+              DView.width(12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Today',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black,
+                      ),
+                    ),
+                    Text(
+                      DateFormat('dd MMM yyy').format(DateTime.now()),
+                    )
+                  ],
+                )
+              ),
+              Radio(
+                value: 1,
+                groupValue: 1,
+                visualDensity: const VisualDensity(
+                  horizontal: -4,
+                ),
+                onChanged: (value) {},
+              )
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget selectDuration() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
