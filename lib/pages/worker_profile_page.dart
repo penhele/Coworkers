@@ -87,9 +87,9 @@ class _WorkerProfilePageState extends State<WorkerProfilePage> {
                           if (recruiterId == '') return DView.nothing();
                           if (recruiterId == 'Available') return DView.nothing();
                           if (recruiterId == userController.data.$id) {
-                            return Text('hired by you'); 
+                            return hiredByYou(); 
                           }
-                          return Text('Hired by other');
+                          return hiredByOther();
                         })
                       ],
                     ),
@@ -115,9 +115,9 @@ class _WorkerProfilePageState extends State<WorkerProfilePage> {
                     ),
                     Obx(() {
                       String recruiterId = workerProfileController.recruiterId;
-                      String txtAvailable = recruiterId == 'Available' ? ' • Available' : '';
+                      String txtAvailable = recruiterId == ' Available' ? ' • Available' : '';
                         return Text(
-                          '${widget.worker.location} • ${widget.worker.experience}yrs $txtAvailable',
+                          '${widget.worker.location} • ${widget.worker.experience}yrs$txtAvailable',
                           style: const TextStyle(
                             color: Colors.grey,
                           ),
@@ -131,6 +131,66 @@ class _WorkerProfilePageState extends State<WorkerProfilePage> {
           ),
         ],
       )
+    );
+  }
+
+  Positioned hiredByYou() {
+    return Positioned(
+      bottom: 0,
+      left: 0,
+      right: 0,
+      child: Center(
+        child: Transform.translate(
+          offset: const Offset(0, 6),
+          child: Container(
+            decoration: BoxDecoration(
+              color: const Color(0xffBFA8FF),
+              borderRadius: BorderRadius.circular(8)
+            ),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 10,
+              vertical: 4
+            ),
+            child: const Text(
+              'HIRED BY YOU',
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+                color: Colors.black
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Positioned hiredByOther() {
+    return Positioned(
+      bottom: 0,
+      left: 0,
+      right: 0,
+      child: Center(
+        child: Transform.translate(
+          offset: const Offset(0, 6),
+          child: Container(
+            decoration: BoxDecoration(
+              color: const Color(0xffFF7179),
+              borderRadius: BorderRadius.circular(8)
+            ),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 10,
+              vertical: 4
+            ),
+            child: const Text(
+              'HIRED BY OTHER',
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+                color: Colors.black
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
