@@ -13,6 +13,10 @@ class BookingController extends GetxController {
   int get duration => _duration.value;
   setDuration(int n, double hourRate) {
     _duration.value = n;
+    BookingModel newBookingModel = bookingDetail
+      ..hiringDuration = n
+      ..subtotal = duration * hourRate;
+    _bookingdDetail.value = newBookingModel;
   }
 
   final _bookingdDetail = BookingModel(

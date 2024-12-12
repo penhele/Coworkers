@@ -5,6 +5,7 @@ import 'package:coworkers/controllers/booking_controller.dart';
 import 'package:coworkers/controllers/user_controller.dart';
 import 'package:coworkers/models/worker_model.dart';
 import 'package:coworkers/widgets/header_worker_left.dart';
+import 'package:coworkers/widgets/section_title.dart';
 import 'package:d_view/d_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -45,10 +46,11 @@ class _BookingPageState extends State<BookingPage> {
               children: [
                 Container(
                   decoration: const BoxDecoration(
-                      color: AppColor.bgHeader,
-                      borderRadius: BorderRadius.only(
-                        bottomRight: Radius.circular(80),
-                      )),
+                    color: AppColor.bgHeader,
+                    borderRadius: BorderRadius.only(
+                      bottomRight: Radius.circular(80),
+                    )
+                  ),
                 ),
                 Transform.translate(
                   offset: Offset(0, 60),
@@ -69,12 +71,108 @@ class _BookingPageState extends State<BookingPage> {
                 ),
               ],
             ),
+          ),
+          DView.height(90),
+          selectDuration(),
+        ],
+      ),
+    );
+  }
+
+  selectDuration() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SectionTitle(text: 'How many hours?', autoPadding: true,),
+        DView.height(),
+        SizedBox(
+          height: 100,
+          child: Obx(() {
+            int durationSelected = bookingController.duration;
+            return ListView.builder(
+              padding: const EdgeInsets.only(left: 20),
+              scrollDirection: Axis.horizontal,
+              physics: const BouncingScrollPhysics(),
+              itemCount: bookingController.hourDuration.length,
+              itemBuilder: (context, index) {
+                int itemDuration = bookingController.hourDuration[index];
+                return GestureDetector(
+                  onTap: () {
+                    bookingController.setDuration(itemDuration, widget.worker.hourRate);
+                  },
+                  child: itemDuration == durationSelected ? itemDurationSelected(itemDuration) : itemDurationUnselected(itemDuration),
+                );
+              });
+            }
+          ),
+        )
+      ],
+    );
+  }
+
+  Container itemDurationSelected(int itemDuration) {
+    return Container(
+      width: 70,
+      margin: const EdgeInsets.only(right: 20),
+      decoration: BoxDecoration(
+        color: Theme.of(context).primaryColor,
+        borderRadius: BorderRadius.circular(28),
+        border: Border.all(
+          color: Theme.of(context).primaryColor,
+        )
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            '$itemDuration',
+            style: const TextStyle(
+              fontSize: 26,
+              color: Colors.white,
+              fontWeight: FontWeight.bold 
+            ),
+          ),
+          const Text(
+            'Hours',
+            style: TextStyle(
+              color: Colors.white
+            ),
           )
         ],
       ),
     );
   }
-  
+
+  Container itemDurationUnselected(int itemDuration) {
+    return Container(
+      width: 70,
+      margin: const EdgeInsets.only(right: 20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(28),
+        border: Border.all(
+          color: AppColor.border,
+        )
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            '$itemDuration',
+            style: const TextStyle(
+              fontSize: 26,
+              color: Colors.black,
+              fontWeight: FontWeight.bold 
+            ),
+          ),
+          const Text(
+            'Hours',
+          )
+        ],
+      ),
+    );
+  }
+
   Widget worker() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
