@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 
-class HeaderWorker extends StatelessWidget {
-  const HeaderWorker({super.key, required this.title, required this.subtitle, required this.iconLeft, required this.functionLeft, required this.iconRight, required this.functionRight});
+class HeaderWorkerLeft extends StatelessWidget {
+  const HeaderWorkerLeft({super.key, required this.title, required this.subtitle, required this.iconLeft, required this.functionLeft});
   final String title;
   final String subtitle;
   final String iconLeft;
   final VoidCallback functionLeft;
-  final String iconRight;
-  final VoidCallback functionRight;
 
   @override
   Widget build(BuildContext context) {
@@ -45,12 +43,11 @@ class HeaderWorker extends StatelessWidget {
               ],
             )
           ),
-          IconButton.filled(
-            onPressed: functionRight,
-            icon: ImageIcon(AssetImage(iconRight)),
-            style: const ButtonStyle(
-              backgroundColor: WidgetStatePropertyAll(Colors.white),
-              foregroundColor: WidgetStatePropertyAll(Colors.black)
+          const IconButton(
+            onPressed: null,
+            icon: Icon(
+              Icons.abc,
+              color: Colors.transparent,
             ),
           ),
         ],
