@@ -1,5 +1,8 @@
 import 'package:coworkers/config/app_color.dart';
+import 'package:coworkers/config/app_format.dart';
+import 'package:coworkers/config/appwrite.dart';
 import 'package:coworkers/controllers/list_worker_controller.dart';
+import 'package:coworkers/models/worker_model.dart';
 import 'package:coworkers/widgets/header_worker.dart';
 import 'package:coworkers/widgets/section_title.dart';
 import 'package:d_view/d_view.dart';
@@ -54,13 +57,12 @@ class _ListWorkerPageState extends State<ListWorkerPage> {
                       Padding(
                         padding: const EdgeInsets.only(top: 40),
                         child: HeaderWorker(
-                          title: widget.category,
-                          subtitle: '13,492 workers',
-                          iconLeft: 'assets/ic_back.png',
-                          functionLeft: () => Navigator.pop(context),
-                          iconRight: 'assets/ic_filter.png',
-                          functionRight: () => {}
-                        ),
+                            title: widget.category,
+                            subtitle: '13,492 workers',
+                            iconLeft: 'assets/ic_back.png',
+                            functionLeft: () => Navigator.pop(context),
+                            iconRight: 'assets/ic_filter.png',
+                            functionRight: () => {}),
                       ),
                       searchBox(),
                     ],
@@ -71,6 +73,8 @@ class _ListWorkerPageState extends State<ListWorkerPage> {
           ),
           DView.height(50),
           topRatedCategory(),
+          DView.height(30),
+          availableWorker()
         ],
       ),
     );
@@ -81,35 +85,30 @@ class _ListWorkerPageState extends State<ListWorkerPage> {
       height: 50,
       margin: const EdgeInsets.symmetric(horizontal: 20),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(30),
-        boxShadow: [
-          BoxShadow(
-            color: const Color(0xffE5E7EC).withOpacity(0.5),
-            blurRadius: 30,
-            offset: const Offset(0, 6)
-          )
-        ]
-      ),
-
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(30),
+          boxShadow: [
+            BoxShadow(
+                color: const Color(0xffE5E7EC).withOpacity(0.5),
+                blurRadius: 30,
+                offset: const Offset(0, 6))
+          ]),
       alignment: Alignment.bottomLeft,
       padding: const EdgeInsets.only(left: 20, right: 8),
-
       child: Row(
         children: [
           const Expanded(
             child: TextField(
               decoration: InputDecoration(
-                hintText: 'Search by name',
-                hintStyle: TextStyle(
-                  color: Color(0xffA7A8B3),
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400,
-                ),
-                border: InputBorder.none,
-                contentPadding: EdgeInsets.all(0),
-                isDense: true
-              ),
+                  hintText: 'Search by name',
+                  hintStyle: TextStyle(
+                    color: Color(0xffA7A8B3),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                  ),
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.all(0),
+                  isDense: true),
               style: TextStyle(
                 color: Colors.black,
                 fontSize: 16,
@@ -126,12 +125,13 @@ class _ListWorkerPageState extends State<ListWorkerPage> {
     );
   }
 
-    Widget topRatedCategory() {
+  Widget topRatedCategory() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SectionTitle(
-          text: 'Top Rated ${widget.category}', autoPadding: true,
+          text: 'Top Rated ${widget.category}',
+          autoPadding: true,
         ),
         DView.height(),
         SizedBox(
@@ -150,7 +150,9 @@ class _ListWorkerPageState extends State<ListWorkerPage> {
                 ),
                 margin: EdgeInsets.only(
                   left: index == 0 ? 20 : 8,
-                  right: index == listWorkerController.topRated.length - 1 ? 20 : 8,
+                  right: index == listWorkerController.topRated.length - 1
+                      ? 20
+                      : 8,
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -164,10 +166,9 @@ class _ListWorkerPageState extends State<ListWorkerPage> {
                     Text(
                       worker['name'],
                       style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black
-                      ),
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black),
                     ),
                     DView.height(4),
                     Row(
@@ -181,9 +182,7 @@ class _ListWorkerPageState extends State<ListWorkerPage> {
                         DView.width(2),
                         Text(
                           '${worker['rate']}',
-                          style: const TextStyle(
-                            color: Colors.black
-                          ),
+                          style: const TextStyle(color: Colors.black),
                         )
                       ],
                     )
@@ -193,6 +192,115 @@ class _ListWorkerPageState extends State<ListWorkerPage> {
             },
           ),
         )
+      ],
+    );
+  }
+
+  Widget availableWorker() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SectionTitle(
+          text: 'Available Workers',
+          autoPadding: true,
+        ),
+        DView.height(),
+        Obx(() {
+          String statusFetch = listWorkerController.statusFetch;
+          if (statusFetch == '') return DView.nothing();
+          if (statusFetch == 'Loading') return DView.loadingCircle();
+          if (statusFetch != 'Success') return DView.error();
+
+          List<WorkerModel> list = listWorkerController.availableWorkers;
+          return ListView.builder(
+            itemCount: list.length, 
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            itemBuilder: (context, index) {
+              WorkerModel item = list[index];
+              return GestureDetector(
+                onTap: () {},
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(color: const Color(0xffEAEAEA)), 
+                  ),
+                  padding: const EdgeInsets.all(12),
+                  margin: const EdgeInsets.only(bottom: 16),
+                  child: Row(
+                    children: [
+                      Image.network(
+                        AppWrite.imageURL(item.image),
+                        width: 60,
+                        height: 60,
+                      ),
+                      DView.width(12),
+                      Expanded(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              item.name,
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.black
+                              ),
+                            ),
+                            DView.height(2),
+                            Text(
+                              '${item.location} • ${item.experience} years',
+                              style: const TextStyle(
+                                color: Colors.grey,
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                AppFormat.price(item.hourRate),
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                  color: Colors.black
+                                ),
+                              ),
+                              const Text('/hr')
+                            ],
+                          ),
+                          DView.height(2),
+                          Row(
+                            children: [
+                              Image.asset(
+                                'assets/ic_star_small.png',
+                                width: 16,
+                                height: 16,
+                              ),
+                              DView.width(2),
+                              Text(
+                                item.rating.toString(),
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                ),
+                              )
+                            ],
+                          )
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              );
+            }
+          );
+        })
       ],
     );
   }
