@@ -1,6 +1,7 @@
 import 'package:coworkers/config/app_color.dart';
 import 'package:coworkers/config/app_format.dart';
 import 'package:coworkers/config/appwrite.dart';
+import 'package:coworkers/config/enums.dart';
 import 'package:coworkers/controllers/booking_controller.dart';
 import 'package:coworkers/controllers/user_controller.dart';
 import 'package:coworkers/models/worker_model.dart';
@@ -77,6 +78,21 @@ class _BookingPageState extends State<BookingPage> {
           selectDuration(),
           DView.height(30),
           whenYouNeed(),
+          DView.height(30),
+          details(),
+          DView.height(30),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: FilledButton(
+              onPressed: () {
+                Navigator.pushNamed(context, AppRoute.checkout.name);
+              },
+              child: const Text(
+                'Proceed Checkout'
+              ),
+            ),
+          ),
+          DView.height(20),
         ],
       ),
     );
@@ -320,6 +336,65 @@ class _BookingPageState extends State<BookingPage> {
             ],
           ),
         ),
+      ),
+    );
+  }
+  
+  Widget details() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SectionTitle(text: 'Detail'),
+          Obx(() {
+            return itemDetail('Hiring duration', '${bookingController.duration} hours');
+          }),
+          itemDetail(
+            'Date', DateFormat('dd MMM yyyy').format(bookingController.bookingDetail.date),
+          ),
+          GetBuilder<BookingController>(builder: (_) {
+            return itemDetail('Sub Total', AppFormat.price(_.bookingDetail.subtotal));
+          }),
+          itemDetail(
+            'Insurance', AppFormat.price(bookingController.bookingDetail.insurance),
+          ),
+          itemDetail(
+            'Taxt 14%', AppFormat.price(bookingController.bookingDetail.tax),
+          ),
+          itemDetail(
+            'Platform fee', AppFormat.price(bookingController.bookingDetail.platformFee),
+          ),
+          itemDetail(
+            'Grand total', AppFormat.price(bookingController.bookingDetail.grandTotal),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget itemDetail(String title, String data) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            title,
+            style: const TextStyle(
+              fontSize: 16,
+              color: Colors.black
+            ),
+          ),
+          Text(
+            data,
+            style: TextStyle(
+              fontWeight: FontWeight.w700,
+              fontSize: 16,
+              color: Colors.black
+            ),
+          )
+        ],
       ),
     );
   }

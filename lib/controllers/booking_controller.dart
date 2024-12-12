@@ -17,6 +17,7 @@ class BookingController extends GetxController {
       ..hiringDuration = n
       ..subtotal = duration * hourRate;
     _bookingdDetail.value = newBookingModel;
+    update();
   }
 
   final _bookingdDetail = BookingModel(
