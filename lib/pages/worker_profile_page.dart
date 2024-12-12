@@ -1,10 +1,12 @@
 import 'package:coworkers/config/app_color.dart';
 import 'package:coworkers/config/app_format.dart';
 import 'package:coworkers/config/appwrite.dart';
+import 'package:coworkers/config/enums.dart';
 import 'package:coworkers/controllers/user_controller.dart';
 import 'package:coworkers/controllers/worker_profile_controller.dart';
 import 'package:coworkers/models/worker_model.dart';
 import 'package:coworkers/widgets/header_worker.dart';
+import 'package:coworkers/widgets/secondary_button.dart';
 import 'package:coworkers/widgets/section_title.dart';
 import 'package:d_view/d_view.dart';
 import 'package:flutter/material.dart';
@@ -38,6 +40,19 @@ class _WorkerProfilePageState extends State<WorkerProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: Obx(() {
+        String recruiterId = workerProfileController.recruiterId;
+        if (recruiterId == '') {
+          return DView.loadingCircle();
+        }
+        if (recruiterId == 'Available') {
+          return hiredNow();
+        }
+        if (recruiterId == userController.data.$id) {
+          return hiredByYou();
+        }
+        return hiredByOther();
+      }),
       body: ListView(
         padding: const EdgeInsets.all(0),
         children: [
@@ -89,9 +104,9 @@ class _WorkerProfilePageState extends State<WorkerProfilePage> {
                         if (recruiterId == '') return DView.nothing();
                         if (recruiterId == 'Available') return DView.nothing();
                         if (recruiterId == userController.data.$id) {
-                          return hiredByYou(); 
+                          return hiredByYouText(); 
                         }
-                        return hiredByOther();
+                        return hiredByOtherText();
                       })
                     ],
                   ),
@@ -117,7 +132,7 @@ class _WorkerProfilePageState extends State<WorkerProfilePage> {
                   ),
                   Obx(() {
                   String recruiterId = workerProfileController.recruiterId;
-                  String txtAvailable = recruiterId == ' Available' ? ' • Available' : '';
+                  String txtAvailable = recruiterId == 'Available' ? ' • Available' : '';
                     return Text(
                       '${widget.worker.location} • ${widget.worker.experience}yrs$txtAvailable',
                       style: const TextStyle(
@@ -210,7 +225,7 @@ class _WorkerProfilePageState extends State<WorkerProfilePage> {
     );
   }
 
-  Positioned hiredByYou() {
+  Positioned hiredByYouText() {
     return Positioned(
       bottom: 0,
       left: 0,
@@ -240,7 +255,7 @@ class _WorkerProfilePageState extends State<WorkerProfilePage> {
     );
   }
 
-  Positioned hiredByOther() {
+  Positioned hiredByOtherText() {
     return Positioned(
       bottom: 0,
       left: 0,
@@ -266,6 +281,107 @@ class _WorkerProfilePageState extends State<WorkerProfilePage> {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget hiredNow() {
+    return Padding(
+      padding: const EdgeInsets.all(20),
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  AppFormat.price(widget.worker.hourRate),
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 22,
+                    fontWeight: FontWeight.w700
+                  ),
+                ),
+                const Text('per hour')
+              ],
+            ),
+          ),
+          SizedBox(
+            width: 200,
+            child: FilledButton(
+              onPressed: () {
+                Navigator.pushNamed(
+                  context, 
+                  AppRoute.booking.name,
+                  arguments: widget.worker
+                );
+              },
+              child: const Text('Hire me'),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget hiredByYou() {
+    return Padding(
+      padding: const EdgeInsets.all(20),
+      child: Row(
+        children: [
+          Expanded(
+            child: SecondaryButton(
+              onPressed: () {},
+              child: const Text('Message'),
+            ),
+          ),
+          DView.width(),
+          Expanded(
+            child: SizedBox(
+              width: 200,
+              child: FilledButton(
+                onPressed: () {
+                },
+                child: const Text('Give Rating'),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget hiredByOther() {
+    return Padding(
+      padding: const EdgeInsets.all(20),
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  AppFormat.price(widget.worker.hourRate),
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 22,
+                    fontWeight: FontWeight.w700
+                  ),
+                ),
+                const Text('per hour')
+              ],
+            ),
+          ),
+          SizedBox(
+            width: 166,
+            child: SecondaryButton(
+              onPressed: () {},
+              child: const Text('Hire me'),
+            ),
+          ),
+        ],
       ),
     );
   }

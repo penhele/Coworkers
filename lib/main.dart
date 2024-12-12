@@ -3,6 +3,7 @@ import 'package:coworkers/config/appwrite.dart';
 import 'package:coworkers/config/enums.dart';
 import 'package:coworkers/config/session.dart';
 import 'package:coworkers/models/worker_model.dart';
+import 'package:coworkers/pages/booking_page.dart';
 import 'package:coworkers/pages/dashboard.dart';
 import 'package:coworkers/pages/get_started.dart';
 import 'package:coworkers/pages/list_worker_page.dart';
@@ -74,6 +75,10 @@ class MyApp extends StatelessWidget {
         AppRoute.workerProfile.name: (context) {
           WorkerModel worker = ModalRoute.of(context)!.settings.arguments as WorkerModel;
           return WorkerProfilePage(worker: worker);
+        },
+        AppRoute.booking.name: (context) {
+          WorkerModel worker = ModalRoute.of(context)!.settings.arguments as WorkerModel;
+          return BookingPage(worker: worker);
         },
       }
     );
