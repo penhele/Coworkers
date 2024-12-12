@@ -23,7 +23,7 @@ class _WorkerProfilePageState extends State<WorkerProfilePage> {
   
   @override
   void dispose() {
-    workerProfileController.dispose();
+    workerProfileController.clear();
     super.dispose();
   }
 

@@ -1,3 +1,4 @@
+import 'package:coworkers/datasources/booking_datasource.dart';
 import 'package:get/get.dart';
 
 class WorkerProfileController extends GetxController {
@@ -6,9 +7,18 @@ class WorkerProfileController extends GetxController {
   }
 
   // recuiter
-  final _tenanId = ''.obs;
-  String get tenantId => _tenanId.value;
-  set tenantId(String n) => _tenanId.value = n;
+  final _recruiterId = ''.obs;
+  String get recruitertId => _recruiterId.value;
+  set recruitertId(String n) => _recruiterId.value = n;
 
-  checkHiredBy(String workerId) {}
+  checkHiredBy(String workerId) {
+    BookingDatasource.checkHiredBy(workerId).then((value) {
+      value.fold(
+        (message) => recruitertId = 'Available',
+        (booking) {
+          recruitertId = booking.userId;
+        }
+      );
+    });
+  }
 }
