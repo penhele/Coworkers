@@ -1,4 +1,3 @@
-import 'package:coworkers/controllers/booking_controller.dart';
 import 'package:get/get.dart';
 
 class CheckoutController extends GetxController {
@@ -30,6 +29,6 @@ class CheckoutController extends GetxController {
   set loading(bool n) => _loading.value = n;
 
   execute() {
-    
+
   }
 }
