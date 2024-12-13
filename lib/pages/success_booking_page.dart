@@ -1,8 +1,11 @@
+import 'package:coworkers/config/app_format.dart';
 import 'package:coworkers/config/appwrite.dart';
 import 'package:coworkers/controllers/booking_controller.dart';
 import 'package:coworkers/controllers/success_booking_controller.dart';
+import 'package:coworkers/widgets/secondary_button.dart';
 import 'package:d_view/d_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 
 class SuccessBookingPage extends StatefulWidget {
@@ -78,12 +81,86 @@ class _SuccessBookingPageState extends State<SuccessBookingPage> {
                     ),
                     hiredText(),
                   ],
-                )
+                ),
+                DView.height(30),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      bookingController.bookingDetail.worker!.name,
+                      style: const TextStyle(
+                        fontSize: 22,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black
+                      ),
+                    ),
+                    DView.width(4),
+                    Image.asset(
+                      'assets/ic_verified.png',
+                      width: 20,
+                      height: 20,
+                    )
+                  ],
+                ),
+                DView.height(8),
+                rating(),
+                DView.height(60),
+                SizedBox(
+                  width: 270,
+                  child: FilledButton(
+                    onPressed: () {
+                      successBookingController.toWorkerProfile(context, bookingController.bookingDetail.workerId, bookingController.bookingDetail.worker!.category);
+                    },
+                    child: const Text('Worker Profile'),
+                  ),
+                ),
+                DView.height(),
+                SizedBox(
+                  width: 270,
+                  child: SecondaryButton(
+                    onPressed: () {
+                      successBookingController.toListWorker(context, bookingController.bookingDetail.worker!.category);
+                    },
+                    child: const Text('Hire other worker'),
+                  ),
+                ),
               ],
             ),
           )
         ],
       ),
+    );
+  }
+
+  Row rating() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        RatingBar.builder(
+          itemBuilder: (context, _) => const Icon(
+            Icons.star,
+            color: Colors.amber,
+          ), 
+          onRatingUpdate: (rating) {},
+          initialRating: bookingController.bookingDetail.worker!.rating,
+          minRating: 1,
+          direction: Axis.horizontal,
+          allowHalfRating: true,
+          itemCount: 5,
+          itemSize: 20,
+          itemPadding: const EdgeInsets.all(0),
+          ignoreGestures: true,
+        ),
+        DView.width(8),
+        Text(
+          '(${AppFormat.number(bookingController.bookingDetail.worker!.ratingCount)})',
+          style: const TextStyle(
+            fontWeight: FontWeight.w600, 
+            color: Colors.black,
+            fontSize: 16
+          ),
+        )
+      ],
     );
   }
   
