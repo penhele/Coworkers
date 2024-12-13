@@ -1,3 +1,7 @@
+import 'package:coworkers/config/app_info.dart';
+import 'package:coworkers/datasources/booking_datasource.dart';
+import 'package:coworkers/models/booking_model.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 class CheckoutController extends GetxController {
@@ -28,7 +32,14 @@ class CheckoutController extends GetxController {
   bool get loading => _loading.value;
   set loading(bool n) => _loading.value = n;
 
-  execute() {
-
+  execute(BuildContext context, BookingModel bookingDetail) {
+    BookingDatasource.checkout(bookingDetail).then((value) {
+      value.fold(
+        (message) => AppInfo.failed(context, message),
+        (data) {
+          AppInfo.success(context, 'Berhasil');
+        },
+      );
+    });
   }
 }

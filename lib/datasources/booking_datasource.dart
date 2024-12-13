@@ -46,4 +46,40 @@ class BookingDatasource {
       return left(message);
     }
   }
+
+  static Future<Either<String, BookingModel>> checkout(BookingModel bookingDetail,) async {
+    try {
+      final response = await AppWrite.databases.createDocument(
+        databaseId: AppWrite.databaseId, 
+        collectionId: AppWrite.collectionBooking,
+        documentId: ID.unique(),
+        data: bookingDetail.toJsonRequest(),
+      );
+
+      await AppWrite.databases.updateDocument(
+        databaseId: AppWrite.databaseId, 
+        collectionId: AppWrite.collectionWorkers,
+        documentId: bookingDetail.workerId,
+        data: {'status':'Booked'},
+      ); 
+
+      AppLog.success(
+        body: response.toMap().toString(),
+        title: 'Booking - checkout',
+      );
+
+      return right(BookingModel.fromJson(response.data));
+    } catch (e) {
+      AppLog.error(body: e.toString(), title: 'Booking - checkout');
+
+      String defaultMessage = 'Terjadi suatu masalah';
+      String message = defaultMessage;
+
+      if (e is AppwriteException) {
+        message = e.message ?? defaultMessage;
+      }
+
+      return left(message);
+    }
+  }
 }
