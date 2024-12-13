@@ -43,22 +43,68 @@ class _OrderFragmentState extends State<OrderFragment> {
                     bottomRight: Radius.circular(80),
                   )
                 ),
+                margin: EdgeInsets.only(bottom: 24),
               ),
-              Transform.translate(
-                offset: const Offset(0, 55),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    header(),
-                    DView.height(20),
-                    // menu
-                  ],
-                ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  header(),
+                  DView.height(20),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: menuOrder('In Progress'),
+                        ),
+                        DView.width(30),
+                        Expanded(
+                          child: menuOrder('Completed'),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
               ),
             ],
           ),
         ),
       ],
+    );
+  }
+
+  Widget menuOrder(String title) {
+    return GestureDetector(
+      onTap: () {
+        orderController.selected = title;
+      },
+      child: Obx(() {
+        bool isActive = orderController.selected == title;
+          return Container(
+            height: 50,
+            decoration: BoxDecoration(
+              color: isActive ? Theme.of(context).primaryColor : Colors.white,
+              borderRadius: BorderRadius.circular(50),
+              boxShadow: [
+                BoxShadow(
+                  color:  const Color(0xffE5E7EC).withOpacity(0.5),
+                  blurRadius: 30,
+                  offset: const Offset(0, 30),
+                ), 
+              ],
+            ),
+            alignment: Alignment.center,
+            child: Text(
+              title,
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: isActive ? Colors.white : Colors.black
+              ),
+            ),
+          );
+        }
+      ),
     );
   }
 
