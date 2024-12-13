@@ -10,6 +10,7 @@ import 'package:coworkers/pages/get_started.dart';
 import 'package:coworkers/pages/list_worker_page.dart';
 import 'package:coworkers/pages/sign_in_page.dart';
 import 'package:coworkers/pages/sign_up_page.dart';
+import 'package:coworkers/pages/success_booking_page.dart';
 import 'package:coworkers/pages/worker_profile_page.dart';
 import 'package:d_view/d_view.dart';
 import 'package:flutter/material.dart';
@@ -82,6 +83,7 @@ class MyApp extends StatelessWidget {
           return BookingPage(worker: worker);
         },
         AppRoute.checkout.name: (context) => const CheckoutPage(),
+        AppRoute.successBooking.name: (context) => const SuccessBookingPage(),
       }
     );
   }
