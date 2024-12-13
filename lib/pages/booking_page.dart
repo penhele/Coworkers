@@ -388,7 +388,7 @@ class _BookingPageState extends State<BookingPage> {
           ),
           Text(
             data,
-            style: TextStyle(
+            style: const TextStyle(
               fontWeight: FontWeight.w700,
               fontSize: 16,
               color: Colors.black
