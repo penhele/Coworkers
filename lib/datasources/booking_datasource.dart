@@ -1,7 +1,9 @@
 import 'package:appwrite/appwrite.dart';
+import 'package:appwrite/models.dart';
 import 'package:coworkers/config/app_log.dart';
 import 'package:coworkers/config/appwrite.dart';
 import 'package:coworkers/models/booking_model.dart';
+import 'package:coworkers/models/worker_model.dart';
 import 'package:dartz/dartz.dart';
 
 class BookingDatasource {
@@ -71,6 +73,60 @@ class BookingDatasource {
       return right(BookingModel.fromJson(response.data));
     } catch (e) {
       AppLog.error(body: e.toString(), title: 'Booking - checkout');
+
+      String defaultMessage = 'Terjadi suatu masalah';
+      String message = defaultMessage;
+
+      if (e is AppwriteException) {
+        message = e.message ?? defaultMessage;
+      }
+
+      return left(message);
+    }
+  }
+
+  static Future<Either<String, List<BookingModel>>> fetchOrder(String userId, String status) async {
+    try {
+      final response = await AppWrite.databases.listDocuments(
+        databaseId: AppWrite.databaseId, 
+        collectionId: AppWrite.collectionBooking,
+        queries: [
+          Query.equal('user_id', userId),
+          Query.equal('status', status),
+          Query.orderDesc('\$updatedAt'),
+        ],
+      );
+
+      if (response.total < 1) {
+        // available
+        AppLog.error(
+          body: "Not found",
+          title: 'Booking - fetchOrder - $status',
+        );
+        return left('tidak ditemukan');
+      }
+
+      AppLog.success(
+        body: response.toMap().toString(),
+        title: 'Booking - fetchOrder - $status',
+      );
+
+      List<BookingModel> orders = [];
+      for (Document doc in response.documents) {
+        final responseWorker = await AppWrite.databases.getDocument(
+          databaseId: AppWrite.databaseId, 
+          collectionId: AppWrite.collectionWorkers,
+          documentId: doc.data['worker_id'],
+        );
+
+        WorkerModel worker = WorkerModel.fromJson(responseWorker.data);
+        BookingModel booking = BookingModel.fromJson(doc.data, worker: worker);
+        orders.add(booking);
+      }
+
+      return right(orders);
+    } catch (e) {
+      AppLog.error(body: e.toString(), title: 'Booking - fetchOrder - $status');
 
       String defaultMessage = 'Terjadi suatu masalah';
       String message = defaultMessage;

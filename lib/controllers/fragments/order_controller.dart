@@ -1,3 +1,4 @@
+import 'package:coworkers/datasources/booking_datasource.dart';
 import 'package:coworkers/models/booking_model.dart';
 import 'package:get/get.dart';
 
@@ -24,12 +25,36 @@ class OrderController extends GetxController {
   String get statusCompleted =>_statusCompleted.value;
   set statusCompleted(String n) => _statusCompleted.value = n;
 
-  init() {
-    fetchInProgress();
-    fetchCompleted();
+  init(String userId) {
+    fetchInProgress(userId);
+    fetchCompleted(userId);
   }
 
-  fetchInProgress() {}
-  fetchCompleted() {}
+  fetchInProgress(String userId) {
+    statusInProgress = 'Loading';
+    BookingDatasource.fetchOrder(userId, 'In Progress').then((value) {
+      value.fold(
+        (message) => statusInProgress = message, 
+        (data) {
+          statusInProgress = 'Success';
+          _inProgress.value = data; 
+        }
+      );
+    });
+  }
+
+  fetchCompleted(String userId) {
+    statusCompleted = 'Loading';
+    BookingDatasource.fetchOrder(userId, 'Completed').then((value) {
+      value.fold(
+        (message) => statusCompleted = message, 
+        (data) {
+          statusCompleted = 'Success';
+          _completed.value = data; 
+        }
+      );
+    });
+  }
+
   setCompleted() {}
 }
