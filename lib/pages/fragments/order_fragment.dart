@@ -1,6 +1,9 @@
 import 'package:coworkers/config/app_color.dart';
+import 'package:coworkers/config/appwrite.dart';
 import 'package:coworkers/controllers/fragments/order_controller.dart';
 import 'package:coworkers/controllers/user_controller.dart';
+import 'package:coworkers/models/booking_model.dart';
+import 'package:coworkers/models/worker_model.dart';
 import 'package:d_view/d_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -69,8 +72,170 @@ class _OrderFragmentState extends State<OrderFragment> {
             ],
           ),
         ),
+        DView.height(24),
+        Expanded(
+          child: Obx(() {
+              return IndexedStack(
+                index: orderController.selected == 'In Progress' ? 0 : 1,
+                children: [
+                  inProgressList(),
+                  completedList()
+                ],
+              );
+            }
+          ),
+        ),
       ],
     );
+  }
+
+  Widget inProgressList() {
+    return Obx(() {
+      String statusFetch = orderController.statusInProgress;
+      if (statusFetch == '') return DView.nothing();
+      if (statusFetch == 'Loading') return DView.loadingCircle();
+      if (statusFetch != 'Success') return DView.error(data: statusFetch);
+      List<BookingModel> list = orderController.inProgress;
+      return ListView.builder(
+        padding: EdgeInsets.symmetric(horizontal: 20),
+        itemCount: list.length,
+        itemBuilder: (context, index) {
+          BookingModel booking = list[index];
+          WorkerModel worker = booking.worker!;
+          return GestureDetector(
+            onTap: () {
+              
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: const Color(0xffEAEAEA)),
+              ),
+              padding: const EdgeInsets.all(12),
+              margin: const EdgeInsets.only(bottom: 16),
+              child: Row(
+                children: [
+                  Image.network(
+                    AppWrite.imageURL(worker.image),
+                    width: 60,
+                    height: 60,
+                  ),
+                  DView.width(12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          worker.name,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black
+                          ),
+                        ),
+                        DView.height(2),
+                        Text(
+                          worker.category,
+                          style: const TextStyle(
+                            color: Colors.grey
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      Text(
+                        booking.hiringDuration.toString(),
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black
+                        ),
+                      ),
+                      const Text(' hours')
+                    ],
+                  )
+                ],
+              ),
+            ),
+          );
+        },
+      );
+    });
+  }
+
+  Widget completedList() {
+    return Obx(() {
+      String statusFetch = orderController.statusCompleted;
+      if (statusFetch == '') return DView.nothing();
+      if (statusFetch == 'Loading') return DView.loadingCircle();
+      if (statusFetch != 'Success') return DView.error(data: statusFetch);
+      List<BookingModel> list = orderController.completed;
+      return ListView.builder(
+        padding: EdgeInsets.symmetric(horizontal: 20),
+        itemCount: list.length,
+        itemBuilder: (context, index) {
+          BookingModel booking = list[index];
+          WorkerModel worker = booking.worker!;
+          return Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: const Color(0xffEAEAEA)),
+            ),
+            padding: const EdgeInsets.all(12),
+            margin: const EdgeInsets.only(bottom: 16),
+            child: Row(
+              children: [
+                Image.network(
+                  AppWrite.imageURL(worker.image),
+                  width: 60,
+                  height: 60,
+                ),
+                DView.width(12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        worker.name,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black
+                        ),
+                      ),
+                      DView.height(2),
+                      Text(
+                        worker.category,
+                        style: const TextStyle(
+                          color: Colors.grey
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                Row(
+                  children: [
+                    Text(
+                      booking.hiringDuration.toString(),
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.black
+                      ),
+                    ),
+                    const Text(' hours')
+                  ],
+                )
+              ],
+            ),
+          );
+        },
+      );
+    });
   }
 
   Widget menuOrder(String title) {
