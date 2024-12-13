@@ -65,10 +65,88 @@ class _CheckoutPageState extends State<CheckoutPage> {
             ),
           ),
           Transform.translate(
-            offset: Offset(0, 60),
+            offset: const Offset(0, 60),
             child: walletBox()
           ),
-          DView.height(90)
+          DView.height(50),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              const Text(
+                'Total pay',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.black
+                ),
+              ),
+              Obx(() {
+                  return Text(
+                    AppFormat.price(bookingController.bookingDetail.grandTotal),
+                    style: const TextStyle(
+                      fontSize: 28,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black
+                    ),
+                  );
+                }
+              )
+            ],
+          ),
+          DView.height(30),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Row(
+              children: [
+                Container(
+                  height: 20,
+                  width: 20,
+                  decoration: BoxDecoration(
+                    border:
+                        Border.all(color: Theme.of(context).primaryColor),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  padding: const EdgeInsets.all(2),
+                  child: Material(
+                    borderRadius: BorderRadius.circular(6),
+                    color: Theme.of(context).primaryColor,
+                  ),
+                ),
+                DView.width(8),
+                const Text(
+                  'I agree with terms and conditions',
+                  style: TextStyle(color: Colors.black),
+                )
+              ],
+            ),
+          ),
+          DView.height(30),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Obx(() {
+              if (checkoutController.loading) return DView.loadingCircle();
+                return FilledButton.icon(
+                  onPressed: () {},
+                  icon: const ImageIcon(
+                    AssetImage('assets/ic_secure.png'),
+                  ),
+                  label: const Text('Pay Now'),
+                );
+              }
+            ),
+          ),
+          DView.height(30),
+          const Center(
+            child: Text(
+              'Read Terms & Conditions',
+              style: TextStyle(
+                decoration: TextDecoration.underline,
+                decorationThickness: 2,
+                decorationStyle: TextDecorationStyle.solid,
+                fontSize: 16,
+                color: Color(0xffB2B3BC)
+              ),
+            ),
+          )
         ],
       ),
     );
