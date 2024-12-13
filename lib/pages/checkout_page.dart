@@ -125,7 +125,11 @@ class _CheckoutPageState extends State<CheckoutPage> {
             child: Obx(() {
               if (checkoutController.loading) return DView.loadingCircle();
                 return FilledButton.icon(
-                  onPressed: () {},
+                  onPressed: () {
+                    checkoutController.execute(
+                      context, bookingController.bookingDetail
+                    );
+                  },
                   icon: const ImageIcon(
                     AssetImage('assets/ic_secure.png'),
                   ),
