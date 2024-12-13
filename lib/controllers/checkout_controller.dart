@@ -9,22 +9,26 @@ class CheckoutController extends GetxController {
     Get.delete<CheckoutController>(force: true);
   }
 
-  final payments = [
+  final List<Map<String, dynamic>> payments = [
     {
       'image': 'assets/ic_wallet_payment.png',
       'label': 'Wallet',
+      'is_active': true,
     },
     {
       'image': 'assets/ic_master_card.png',
       'label': 'CC',
+      'is_active': false,
     },
     {
       'image': 'assets/ic_paypal.png',
       'label': 'PayPal',
+      'is_active': false,
     },
     {
       'image': 'assets/ic_other.png',
       'label': 'Other',
+      'is_active': false,
     },
   ];
 

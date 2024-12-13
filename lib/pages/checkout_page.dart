@@ -3,6 +3,7 @@ import 'package:coworkers/controllers/booking_controller.dart';
 import 'package:coworkers/controllers/checkout_controller.dart';
 import 'package:coworkers/controllers/user_controller.dart';
 import 'package:coworkers/widgets/header_worker_left.dart';
+import 'package:d_view/d_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -43,7 +44,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   ),
                 ),
                 Transform.translate(
-                  offset: Offset(0, 60),
+                  offset: const Offset(0, 55),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -55,7 +56,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                           Navigator.pop(context);
                         }
                       ),
-                      // worker(),
+                      payments(),
                     ],
                   ),
                 ),
@@ -63,6 +64,45 @@ class _CheckoutPageState extends State<CheckoutPage> {
             ),
           ),
         ],
+      ),
+    );
+  }
+  
+  Widget payments() {
+    return Padding(
+      padding: const EdgeInsets.only(left: 20),
+      child: Row(
+        children: checkoutController.payments.map((e) {
+          return Padding(
+            padding: const EdgeInsets.only(right: 20),
+            child: Column(
+              children: [
+                Container(
+                  width: 60,
+                  height: 60,
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: Colors.white, 
+                      width: 5
+                    ),
+                    color: e['is_active'] ? Theme.of(context).primaryColor : const Color(0xffF2F2F2),
+                  ),
+                  child: Image.asset(e['image']),
+                ),
+                DView.height(8),
+                Text(
+                  e['label'],
+                  style: TextStyle(
+                      color: e['is_active'] ? Colors.black : const Color(0xffA7A8B3),
+                    fontWeight: FontWeight.w600
+                  ),
+                )
+              ],
+            ),
+          );
+        }).toList(),
       ),
     );
   }
