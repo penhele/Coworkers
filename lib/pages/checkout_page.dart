@@ -1,4 +1,5 @@
 import 'package:coworkers/config/app_color.dart';
+import 'package:coworkers/config/app_format.dart';
 import 'package:coworkers/controllers/booking_controller.dart';
 import 'package:coworkers/controllers/checkout_controller.dart';
 import 'package:coworkers/controllers/user_controller.dart';
@@ -63,6 +64,11 @@ class _CheckoutPageState extends State<CheckoutPage> {
               ],
             ),
           ),
+          Transform.translate(
+            offset: Offset(0, 60),
+            child: walletBox()
+          ),
+          DView.height(90)
         ],
       ),
     );
@@ -104,6 +110,54 @@ class _CheckoutPageState extends State<CheckoutPage> {
           );
         }).toList(),
       ),
+    );
+  }
+  
+  Widget walletBox() {
+    return Stack(
+      children: [
+        Image.asset(
+          'assets/bg_card.png'
+        ),
+        Positioned(
+          left: 60,
+          top: 110,
+          child: Text(
+            AppFormat.price(45988),
+            style: const TextStyle(
+              color: Colors.white,
+              fontSize: 36,
+              fontWeight: FontWeight.w700,
+            ),
+          ), 
+        ),
+        Positioned(
+          left: 60,
+          right: 60,
+          bottom: 106,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Obx(() {
+                return Text(
+                  userController.data.name ?? '',
+                  style: const TextStyle(
+                    fontSize: 16,
+                    color: Colors.white,
+                  ),
+                );
+              }),
+              const Text(
+                '12/27',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.white
+                ),
+              )
+            ],
+          ),
+        )
+      ],
     );
   }
 }
