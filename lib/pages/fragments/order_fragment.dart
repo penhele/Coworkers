@@ -104,7 +104,12 @@ class _OrderFragmentState extends State<OrderFragment> {
           WorkerModel worker = booking.worker!;
           return GestureDetector(
             onTap: () {
-              
+              orderController.setCompleted(
+                context,
+                booking.$id,
+                booking.workerId,
+                userController.data.$id!,
+              );
             },
             child: Container(
               decoration: BoxDecoration(

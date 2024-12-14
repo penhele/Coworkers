@@ -138,4 +138,43 @@ class BookingDatasource {
       return left(message);
     }
   }
+
+  static Future<Either<String, BookingModel>> setCompleted(
+      String bookingId, 
+      String workerId
+    ) async {
+    try {
+      final response = await AppWrite.databases.updateDocument(
+        databaseId: AppWrite.databaseId, 
+        collectionId: AppWrite.collectionBooking,
+        documentId: bookingId,
+        data: {'status':'Completed'},
+      );
+
+      await AppWrite.databases.updateDocument(
+        databaseId: AppWrite.databaseId, 
+        collectionId: AppWrite.collectionWorkers,
+        documentId: workerId,
+        data: {'status':'Available'},
+      ); 
+
+      AppLog.success(
+        body: response.toMap().toString(),
+        title: 'Booking - setCompleted',
+      );
+
+      return right(BookingModel.fromJson(response.data));
+    } catch (e) {
+      AppLog.error(body: e.toString(), title: 'Booking - checkout');
+
+      String defaultMessage = 'Terjadi suatu masalah';
+      String message = defaultMessage;
+
+      if (e is AppwriteException) {
+        message = e.message ?? defaultMessage;
+      }
+
+      return left(message);
+    }
+  }
 }

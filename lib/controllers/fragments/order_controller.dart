@@ -1,5 +1,7 @@
+import 'package:coworkers/config/app_info.dart';
 import 'package:coworkers/datasources/booking_datasource.dart';
 import 'package:coworkers/models/booking_model.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class OrderController extends GetxController {
@@ -56,5 +58,47 @@ class OrderController extends GetxController {
     });
   }
 
-  setCompleted() {}
+  setCompleted(BuildContext context, String bookingId, String workerId, String userId) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text(
+            'Set Completed',
+            style: TextStyle(
+              color: Colors.black
+            ),
+          ),
+          content: const Text(
+            'You sure want to set this worker has finished the job?',
+            style: TextStyle(
+              color: Colors.black
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('No'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context, true),
+              child: const Text('Yes'),
+            ),
+          ],
+        );
+      },
+    ).then((yes) {
+      if (yes ?? false) {
+        BookingDatasource.setCompleted(bookingId, workerId).then((value) {
+          value.fold(
+            (message) => AppInfo.failed(context, message),
+            (data) {
+              AppInfo.toastSuccess('Worker Complete the Job');
+              init(userId);
+            },
+          );
+        }); 
+      }
+    });
+  }
 }
