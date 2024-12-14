@@ -1,4 +1,6 @@
 import 'package:coworkers/config/app_color.dart';
+import 'package:coworkers/config/enums.dart';
+import 'package:coworkers/config/session.dart';
 import 'package:coworkers/controllers/user_controller.dart';
 import 'package:d_view/d_view.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +15,43 @@ class SettingFragment extends StatefulWidget {
 
 class _SettingFragmentState extends State<SettingFragment> {
   final userController = Get.put(UserController());
+
+  logout() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text(
+            'Sign Out',
+            style: TextStyle(
+              color: Colors.black
+            ),
+          ),
+          content: const Text(
+            'You sure want to sign out?',
+            style: TextStyle(
+              color: Colors.black
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('No'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context, true),
+              child: const Text('Yes'),
+            ),
+          ],
+        );
+      },
+    ).then((yes) {
+      if (yes ?? false) {
+        AppSession.removeUser();
+        Navigator.pushReplacementNamed(context, AppRoute.signIn.name);
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -102,7 +141,7 @@ class _SettingFragmentState extends State<SettingFragment> {
         itemDivider(),
         itemSetting('assets/ic_rate_app.png', 'Rate App'),
         itemDivider(),
-        itemSetting('assets/ic_sign_out.png', 'Sign Out', onTap: () {}),
+        itemSetting('assets/ic_sign_out.png', 'Sign Out', onTap: logout),
       ],
     );
   }
