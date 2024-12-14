@@ -92,7 +92,44 @@ class _SettingFragmentState extends State<SettingFragment> {
           ),
         ),
         DView.height(),
+        itemSetting('assets/ic_edit.png', 'Edit Profile'),
+        itemDivider(),
+        itemSetting('assets/ic_invoice.png', 'Invoices'),
+        itemDivider(),
+        itemSetting('assets/ic_payment_setting.png', 'Payments'),
+        itemDivider(),
+        itemSetting('assets/ic_notification_setting.png', 'Notifications'),
+        itemDivider(),
+        itemSetting('assets/ic_rate_app.png', 'Rate App'),
+        itemDivider(),
+        itemSetting('assets/ic_sign_out.png', 'Sign Out', onTap: () {}),
       ],
+    );
+  }
+
+  Widget itemDivider() {
+    return const Divider(
+      height: 1,
+      thickness: 1,
+      indent: 20,
+      endIndent: 20,
+      color: Color(0xffEAEAEA),
+    );
+  }
+
+  Widget itemSetting(String icon, String title, {VoidCallback? onTap}) {
+    return ListTile(
+      contentPadding: const EdgeInsets.symmetric(horizontal: 20),
+      onTap: onTap,
+      leading: ImageIcon(
+        AssetImage(icon)
+      ),
+      title: Text(title),
+      titleTextStyle: const TextStyle(
+        fontSize: 15,
+        fontWeight: FontWeight.w600,
+        color: Colors.black
+      ),
     );
   }
 
